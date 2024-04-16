@@ -34,22 +34,20 @@ def save_diary():
     today = datetime.now()
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
 
+    
+    # Validasi
+    if  not title_receive or not content_receive or 'file_give' not in request.files or 'profil_give' not in request.files :
+        return jsonify({'error': 'Harap lengkapi data!'})
+    
+    
     file=request.files["file_give"]
     extension = file.filename.split('.')[-1]
     filename =  f'static/file-{mytime}.{extension}'
-    
+    file.save(filename)
 
     profile=request.files["profil_give"]
     extension = profile.filename.split('.')[-1]
     profilname =  f'static/pro-{mytime}.{extension}'
-    
-
-    # Validasi
-    if  not title_receive or not content_receive :
-        return jsonify({'error': 'Harap lengkapi data!'})
-    
-    file.save(filename)
-
     profile.save(profilname)
 
     time=today.strftime('%Y-%m-%d')
